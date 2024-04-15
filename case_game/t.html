@@ -13,8 +13,6 @@
 <canvas id="Canvas" width="3000" height="500" style="border:1px solid black"></canvas>
 <div id="collisionScore">Score: 0</div>
 <button id="restartButton" style="display:none;">Chơi lại</button>
-
-
 </body>
 <audio id="backgroundMusic" loop>
     <source src="https://raw.githubusercontent.com/trancuong3/music-1/main/1_Y2meta.app%20-%20Geometry%20Dash%20-%20Jumper%20%5BFULL%20SONG%20DOWNLOAD%5D%20(128%20kbps).mp3
@@ -72,15 +70,13 @@
             }
         }
     }
-
     const canvas = document.getElementById("Canvas");
     const ctx = canvas.getContext("2d");
     let score = 0;
     let square;
     let blocks = [];
     let startTime = 0;
-    let jumping = false; // Biến để theo dõi trạng thái nhảy
-
+    let jumping = false;
     function generateBlock() {
         let size = Math.floor(Math.random() * 100) + 25;
         let x = canvas.width + size;
@@ -89,10 +85,10 @@
         let elapsedTime = (currentTime - startTime) / 1000;
         let speed = -0.78 - (elapsedTime * 0.01);
         let acceleration = -0.005;
+        speed+=acceleration;
         let block = new Shape(x, y, size, 'green', 'square', speed, acceleration);
         blocks.push(block);
     }
-
     function drawBlocks() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         square.draw();
@@ -101,7 +97,6 @@
             block.draw();
         });
     }
-
     function checkCollision() {
         blocks.forEach((block, index) => {
             if (square.x < block.x + block.size &&
@@ -129,12 +124,10 @@
             }
         });
     }
-
     function pauseMusic() {
         const backgroundMusic = document.getElementById("backgroundMusic");
         backgroundMusic.pause();
     }
-
     function moveSquare() {
         square.moveRight();
         drawBlocks();
@@ -143,25 +136,22 @@
             requestAnimationFrame(moveSquare);
         }
     }
-
     function startGame() {
         const backgroundMusic = document.getElementById("backgroundMusic");
         backgroundMusic.play();
         let color = document.getElementById("colorPicker").value;
-        square = new Shape(20, canvas.height - 50, 50, color, 'square', 0.001, 0);
+        square = new Shape(40, canvas.height - 50, 50, color, 'square', 0.001, 0);
         square.draw();
         startTime = Date.now();
         generateBlock();
         setInterval(generateBlock, 2000);
         moveSquare();
     }
-
     document.getElementById("startButton").addEventListener("click", startGame);
 
     document.getElementById('restartButton').addEventListener("click", () => {
         window.location.reload();
     });
-
     canvas.addEventListener("click", () => {
         if (square) {
             square.setJump(true);
@@ -177,6 +167,5 @@
             }
         }
     });
-
 </script>
 </html>
